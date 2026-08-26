@@ -29,6 +29,34 @@ jobs:
       - name: Compilar
         run: gradle build --stacktrace
 
+      # ===== Verificações: se algo estiver errado, o build FALHA aqui
+      # em vez de publicar um jar quebrado =====
+      - name: Verificar se o JAR está correto
+        run: |
+          JAR=$(ls build/libs/*.jar | grep -v -- '-dev' | grep -v -- '-sources' | head -n 1)
+          echo "JAR principal: $JAR"
+
+          # 1) fabric.mod.json existe e está na raiz do jar?
+          if ! unzip -p "$JAR" fabric.mod.json > /dev/null 2>&1; then
+            echo "::error::ERRO: o JAR não tem fabric.mod.json! No repositório, o arquivo precisa estar exatamente em src/main/resources/fabric.mod.json"
+            exit 1
+          fi
+
+          # 2) o refmap (dicionário do mixin) foi gerado dentro do jar?
+          if ! unzip -l "$JAR" | grep -q "superfurnace-refmap.json"; then
+            echo "::error::ERRO: o refmap (superfurnace-refmap.json) não foi gerado dentro do JAR! O nome no build.gradle e no superfurnace.mixins.json precisa ser igual."
+            exit 1
+          fi
+
+          # 3) o refmap contém o mapeamento do método que o mixin usa?
+          if ! unzip -p "$JAR" superfurnace-refmap.json | grep -q "getCookTime"; then
+            echo "::error::ERRO: o refmap não contém o mapeamento de getCookTime! Verifique o @Inject no AbstractFurnaceBlockEntityMixin."
+            exit 1
+          fi
+
+          echo "OK: fabric.mod.json e refmap presentes e corretos!"
+
+      # ===== Publicação =====
       - name: Separar o JAR final e ler versões
         run: |
           VERSION=$(grep '^mod_version=' gradle.properties | cut -d'=' -f2)
@@ -55,11 +83,16 @@ jobs:
           tag_name: ${{ env.TAG }}
           name: Super Fornalha ${{ env.TAG }} (MC ${{ env.MC }})
           body: |
-            Fornalha que funde itens 4x mais rápido.
+            Fornalhas 4x mais rápidas: fornalha, alto-forno e defumador
+            fundem os itens 4x mais rápido (2,5s em vez de 10s).
 
             **Instalação:**
             1. Instale o Fabric Loader para 1.17.1 (fabricmc.net/use)
             2. Baixe o arquivo .jar abaixo
-            3. Coloque na pasta `.minecraft/mods`
+            3. Apague qualquer versão antiga do mod da pasta mods
+            4. Coloque este .jar na pasta mods e abra o jogo
+
+            **Teste:** coloque um carvão e um minério na fornalha normal —
+            funde em ~2,5 segundos ⚡
           files: SuperFornalha-*.jar
           fail_on_unmatched_files: true
