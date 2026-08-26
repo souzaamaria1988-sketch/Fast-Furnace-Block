@@ -3,14 +3,14 @@
   "id": "superfurnace",
   "version": "${version}",
   "name": "Super Fornalha",
-  "description": "Fornalha que funde itens 4x mais rápido.",
+  "description": "Fornalhas fundem 4x mais rápido (versão leve).",
   "authors": ["SeuNome"],
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
-    "main": ["com.exemplo.superfurnace.SuperFurnaceMod"],
-    "client": ["com.exemplo.superfurnace.SuperFurnaceClient"]
+    "main": ["com.exemplo.superfurnace.SuperFurnaceMod"]
   },
+  "mixins": ["superfurnace.mixins.json"],
   "depends": {
     "fabricloader": ">=0.11.0",
     "minecraft": "1.17.1",
