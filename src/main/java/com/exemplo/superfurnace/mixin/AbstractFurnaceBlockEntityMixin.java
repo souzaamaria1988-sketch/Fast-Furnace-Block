@@ -13,8 +13,8 @@ public class AbstractFurnaceBlockEntityMixin {
 
     // Divide o tempo de fundição por 4 (troque o 4 pra ajustar a velocidade)
     @Inject(method = "getCookTime", at = @At("RETURN"), cancellable = true)
-    private void superfurnace$velocidade4x(DefaultedList<ItemStack> slots,
-                                           CallbackInfoReturnable<Integer> cir) {
+    private static void superfurnace$velocidade4x(DefaultedList<ItemStack> slots,
+                                                  CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(Math.max(1, cir.getReturnValue() / 4));
     }
 }
