@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "superfurnace",
+  "version": "${version}",
+  "name": "Super Fornalha",
+  "description": "Fornalha que funde itens 4x mais rápido.",
+  "authors": ["SeuNome"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.exemplo.superfurnace.SuperFurnaceMod"],
+    "client": ["com.exemplo.superfurnace.SuperFurnaceClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.11.0",
+    "minecraft": "1.17.1",
+    "java": ">=16"
+  }
+}
