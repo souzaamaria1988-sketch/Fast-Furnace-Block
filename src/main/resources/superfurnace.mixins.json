@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.exemplo.superfurnace.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "superfurnace.refmap.json",
+  "mixins": ["AbstractFurnaceBlockEntityMixin"],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
