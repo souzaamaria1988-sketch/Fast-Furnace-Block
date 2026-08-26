@@ -1,13 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " B ",
-    "BFB",
-    " B "
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:furnace" }
   ],
-  "key": {
-    "B": { "item": "minecraft:blaze_rod" },
-    "F": { "item": "minecraft:furnace" }
-  },
   "result": { "item": "superfurnace:super_furnace" }
 }
